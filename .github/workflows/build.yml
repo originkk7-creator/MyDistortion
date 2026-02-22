@@ -1,0 +1,109 @@
+name: Build VST3
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+    
+    - name: Configure
+      run: |
+        cd MyDistortion
+        mkdir build
+        cd build
+        cmake .. -G "Visual Studio 17 2022" -A x64
+    
+    - name: Build
+      run: |
+        cd MyDistortion/build
+        cmake --build . --config Release
+    
+    - name: Upload VST3
+      uses: actions/upload-artifact@v4
+      with:
+        name: MyDistortion-VST3-Windows
+        path: MyDistortion/build/Release/MyDistortion.vst3
+
+  build-linux:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          cmake \
+          libasound2-dev \
+          libjack-jackd2-dev \
+          libcurl4-openssl-dev \
+          libfreetype6-dev \
+          libx11-dev \
+          libxcomposite-dev \
+          libxcursor-dev \
+          libxinerama-dev \
+          libxrandr-dev \
+          libgl1-mesa-dev \
+          libegl1-mesa-dev
+    
+    - name: Configure
+      run: |
+        cd MyDistortion
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release
+    
+    - name: Build
+      run: |
+        cd MyDistortion/build
+        cmake --build . --config Release -j$(nproc)
+    
+    - name: Upload VST3
+      uses: actions/upload-artifact@v4
+      with:
+        name: MyDistortion-VST3-Linux
+        path: MyDistortion/build/MyDistortion.vst3
+
+  build-macos:
+    runs-on: macos-latest
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+    
+    - name: Configure
+      run: |
+        cd MyDistortion
+        mkdir build
+        cd build
+        cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_OSX_ARCHITECTURES="arm64;x86_64"
+    
+    - name: Build
+      run: |
+        cd MyDistortion/build
+        cmake --build . --config Release -j$(sysctl -n hw.ncpu)
+    
+    - name: Upload VST3
+      uses: actions/upload-artifact@v4
+      with:
+        name: MyDistortion-VST3-macOS
+        path: MyDistortion/build/MyDistortion.vst3

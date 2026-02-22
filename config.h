@@ -1,0 +1,22 @@
+#define PLUG_NAME "MyDistortion"
+#define PLUG_MFR "MyCompany"
+#define PLUG_VERSION_HEX 0x00010000
+#define PLUG_UNIQUE_ID 'MyD0'
+#define PLUG_MFR_ID 'MyCo'
+#define PLUG_MAX_CHANNELS 2
+#define PLUG_DOES_MIDI_IN 0
+#define PLUG_DOES_MIDI_OUT 0
+#define PLUG_DOES_MPE 0
+#define PLUG_DOES_SIDECAR 0
+#define PLUG_CHANNEL_STR "stereo"
+#define PLUG_DESC "Distortion effect with custom background"
+#define PLUG_CATEGORY_STR "effect"
+#define PLUG_CATEGORY kPlugCategoryEffect
+#define PLUG_IS_AAX 1
+#define PLUG_IS_VST3 1
+#define PLUG_IS_AUDIOUNIT 1
+#define PLUG_IS_VST2 0
+#define PLUG_IS_STANDALONE 1
+#define PLUG_LATENCY 0
+#define PLUG_TYPE 0
+#define PLUG_MFR_PRODUCT "MyDistortion"
