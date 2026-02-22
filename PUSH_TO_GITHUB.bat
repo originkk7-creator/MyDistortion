@@ -1,30 +1,16 @@
 @echo off
 echo ========================================
-echo  GitHub Actions - Пуш кода
+echo  MyDistortion - Push to GitHub
+echo  User: originkk7
 echo ========================================
 echo.
-echo 1. Создай репозиторий на GitHub:
-echo    https://github.com/new
-echo    Название: MyDistortion
-echo    Public
-echo.
-echo 2. Введи URL репозитория ниже:
-echo    (например: https://github.com/username/MyDistortion.git)
-echo.
-set /p REPO_URL="URL репозитория: "
 
-if "%REPO_URL%"=="" (
-    echo.
-    echo Пустой URL!
-    pause
-    exit /b 1
-)
+cd /d "%~dp0"
 
-echo.
 echo Инициализация Git...
 git init
-git config user.name "YourName"
-git config user.email "your@email.com"
+git config user.name "originkk7"
+git config user.email "originkk7@users.noreply.github.com"
 
 echo.
 echo Добавление файлов...
@@ -37,21 +23,42 @@ git branch -M main
 
 echo.
 echo Подключение репозитория...
-git remote add origin %REPO_URL%
+git remote remove origin 2>nul
+git remote add origin https://github.com/originkk7/MyDistortion.git
 
 echo.
 echo Пуш на GitHub...
 git push -u origin main
 
-echo.
-echo ========================================
-echo  ГОТОВО!
-echo ========================================
-echo.
-echo Теперь:
-echo 1. Зайди в свой репозиторий на GitHub
-echo 2. Перейди во вкладку Actions
-echo 3. Нажми Run workflow
-echo 4. Жди сборку ~10 минут
-echo.
+if errorlevel 1 (
+    echo.
+    echo ========================================
+    echo  ОШИБКА!
+    echo ========================================
+    echo.
+    echo Возможные причины:
+    echo 1. Репозиторий не создан на GitHub
+    echo 2. Неверное имя пользователя
+    echo.
+    echo Создай репозиторий:
+    echo https://github.com/new
+    echo Название: MyDistortion
+    echo Public
+    echo.
+) else (
+    echo.
+    echo ========================================
+    echo  УСПЕХ!
+    echo ========================================
+    echo.
+    echo Код загружен в:
+    echo https://github.com/originkk7/MyDistortion
+    echo.
+    echo Далее:
+    echo 1. Открой https://github.com/originkk7/MyDistortion/actions
+    echo 2. Нажми Run workflow
+    echo 3. Жди сборку ~10-15 минут
+    echo.
+)
+
 pause
